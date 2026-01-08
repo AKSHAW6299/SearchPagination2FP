@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { getApiData } from "./services/dummyApi";
 
 function App() {
   const [data, setData] = useState([]);
   const [input, setInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1)
 
+  // 2) Using axios instance
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json()) // res.json() converts the response body into a JavaScript object/array.
-      .then((result) => {
-        console.log(result);
-        setData(result);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+    fetchData()
+  }, [])
+  const fetchData = async () => {
+    const response = await getApiData()
+    setData(response?.data)
+  }
+
+  // 1) Using fetch() api method
+  // useEffect(() => {
+  //   fetch("https://jsonplaceholder.typicode.com/posts")
+  //     .then((res) => res.json()) // res.json() converts the response body into a JavaScript object/array.
+  //     .then((result) => {
+  //       console.log(result);
+  //       setData(result);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // }, []);
+
+
+  // Filter data
   const flterData = data.filter((d) =>
     d.title.toLowerCase().includes(input.toLowerCase())
   );
